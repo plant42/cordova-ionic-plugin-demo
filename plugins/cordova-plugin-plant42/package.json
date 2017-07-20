@@ -1,0 +1,11 @@
+{
+  "name": "cordova-plugin-plant42",
+  "version": "1.0.0",
+  "cordova": {
+    "id": "cordova-plugin-plant42",
+    "platforms": [
+      "android"
+    ]
+  },
+  "description": "A starting point for a Cordova Plugin"
+}

@@ -1,0 +1,183 @@
+{
+  "voiceable" : {
+    "initial": {
+      "introduction" : {
+        "first" :   "Voiceable is a revolutionary Voice Coaching app that scientifically analyzes your voice and then predicts how audiences are likely to respond to your unique voice qualities.",
+        "second" :  "Use this app to identify your strengths & weaknesses and to improve rapidly."
+      }
+    },
+    "signup": {
+      "description" : "Welcome to Voiceable! For the best user experience, we recommend creating a user profile by logging into one of the following services:"
+    },
+    "tips" : {
+      "title" : "Tips & Exercises"
+    },
+    "record": {
+      "initial" : {
+        "title":   "Pro Tips",
+        "first":   "Choose a <b>quiet location</b>",
+        "second" : "Speak for a minimum of <b>30 seconds</b>",
+        "third" :  "Be <b>passionate</b>",
+        "hint" :   "Tap the button to start recording"
+      },
+
+      "getReady" : "Get Ready...",
+      "recording": "Keep speaking...",
+      "submit":    "Submit",
+      "retry" : {
+        "play":    "Play Recording",
+        "stop":    "Stop Recording",
+        "retry" :  "Try Again"
+      },
+      "survey": {
+        "gender":         "What's your gender?",
+        "description" :   "Audiences expect different ranges of pitch from different genders. Please indicate the gender you wish for us to process your data with.",
+        "male" :          "MALE",
+        "female" :        "FEMALE",
+        "name" : {
+          "label":        "Name this presentation",
+          "placeholder":  "Name"
+        },
+        "type" : {
+          "label":        "Type of presentation",
+          "placeholder":  "Type",
+          "speech":       "Speech",
+          "presentation": "Presentation",
+          "pitch":        "Sales pitch",
+          "debate":       "Debate",
+          "interview":    "Interview",
+          "toast":        "Toast",
+          "pressRelease": "Press Release"
+        },
+        "rating": "Rate Yourself",
+        "notice": "Your voice sample is being analyzed. Meanwhile, please answer the following questions:",
+        "please": "Please",
+        "wait":   "Wait"
+      },
+      "prompts": {
+        "0": "Speak clearly...",
+        "1": "Keep speaking...",
+        "2": "Doing great...",
+        "3": "Keep it up...",
+        "4": "Great job...",
+        "5": "Almost done..."
+      }
+    },
+    "results" : {
+      "title" :    "Results",
+      "score" :    "Your Score",
+      "historic" : "Your Historic Results",
+      "numbers":   "Your Voice Measurements:",
+      "signup" : {
+        "title" :       "Sign Up",
+        "description" : "Would you like to save your results and be able to track your progress?"
+      },
+      "segment": {
+        "overall" :         "Overall Score",
+        "characteristics" : "Characteristics",
+        "impressions" :     "Impressions"
+      },
+      "overall": {
+        "title":            "Overall Score",
+        "ofTen":            "out of 10",
+        "strength":         "Your Strength:",
+        "weakness":         "Your Weakness:",
+        "pitchAverage":     "Pitch Average:",
+        "pitchRange":       "Pitch Range:",
+        "pitchModulation":  "Pitch Modulation:",
+        "volumeRange":      "Volume Range:",
+        "volumeModulation": "Volume Modulation:",
+        "pace":             "Pace:"
+      },
+      "impressions": {
+        "title": "How audiences are likely to judge your personality based on your voice"
+      },
+      "characteristics": {
+        "title": "Scientific measurement of your voice characteristics"
+      }
+    },
+    "celebrity": {
+      "title" :         "Celebrity Match",
+      "you" :           "You",
+      "share" :         "Share Your Results",
+      "compare" :       "Compare with influential people",
+      "description":    "Your speaking voice is {{score}}% similar to <strong>{{name}}</strong>",
+      "segment" : {
+        "celebrity" :   "Celebrities",
+        "ceos" :        "CEOs",
+        "politicians" : "Politicians",
+        "influencers" : "Influencers"
+      },
+      "social": {
+        "twitter":  "Shared on Twitter",
+        "facebook": "Shared on Facebook",
+        "linkedin": "Shared on LinkedIn"
+      }
+    },
+    "buttons" : {
+      "learnMore" :   "Learn More",
+      "signupWith" :  "Sign up with {{name}}",
+      "letsBegin" :   "Let's Begin",
+      "recordNew" :   "Record New",
+      "viewResults" : "View Results",
+      "continue" :    "Continue",
+      "retry" :       "Try Again",
+      "learnAbout":   "Learn about ",
+      "selectPeople": "Select People",
+      "play" :        "Play",
+      "pause" :       "Pause",
+      "noSignUp" :    "Try without signing up",
+      "back":         "Back",
+
+      "characteristics": {
+        "pitch-average" :    "Pitch",
+        "pitch-range" :      "Pitch",
+        "pitch-moderation" : "Pitch",
+        "pace" :             "Pace",
+        "volume-range" :     "Volume",
+        "volume-modulation" :   "Volume",
+        "pleasantness" :     "Pleasantness",
+        "dynamism" :         "Dynamism"
+      }
+    },
+    "errors" : {
+      "upload" :       "An error occurred while uploading. Please try again",
+      "shareNotFound": "Missing service! Please try another.",
+      "shareUnable":   "That service seems to be unable to share that."
+    },
+    "raw": {
+      "pace": {
+        "name": "Pace",
+        "unit": "Syllables/sec"
+      },
+      "pitch-average": {
+        "name": "Pitch Average",
+        "unit": "Hz"
+      },
+      "pitch-range": {
+        "name": "Pitch Range",
+        "unit": "Hz"
+      },
+      "pitch-modulation": {
+        "name": "Pitch Modulation",
+        "unit": ""
+      },
+      "volume-range": {
+        "name": "Volume Range",
+        "unit": "Db"
+      },
+      "volume-modulation": {
+        "name": "Volume Modulation",
+        "unit": ""
+      },
+      "pleasantness": {
+        "name": "Pleasantness",
+        "unit": ""
+      },
+      "dynamism": {
+        "name": "Dynamism",
+        "unit": ""
+      }
+    }
+  }
+}

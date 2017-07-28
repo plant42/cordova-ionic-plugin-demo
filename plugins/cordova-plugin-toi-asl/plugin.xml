@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+    id="cordova-plugin-toi-asl"
+    version="1.0.0">
+    <name>Audio Stat Logger</name>
+    <description></description>
+    <license>MIT</license>
+    <keywords></keywords>
+
+    <!-- android -->
+    <platform name="android">
+      <js-module src="www/plugin.js" name="plugin">
+        <runs/>
+
+        <!-- This is the window variable name you want, like window.MyCordovaPlugin -->
+        <clobbers target="AudioStatLogger" />
+      </js-module>
+      <config-file target="res/xml/config.xml" parent="/*">
+        <feature name="AudioStatLogger">
+          <param name="android-package" value="AudioStatLogger" />
+          <param name="onload" value="true" />
+        </feature>
+      </config-file>
+
+      <source-file src="src/android/AudioStatLogger.java" target-dir="src/" />
+    </platform>
+
+</plugin>

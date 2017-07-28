@@ -1,0 +1,11 @@
+{
+  "name": "AudioStatLogger",
+  "version": "1.0.0",
+  "cordova": {
+    "id": "cordova-plugin-toi-asl",
+    "platforms": [
+      "android"
+    ]
+  },
+  "description": "Schedules logging of audio data stats"
+}

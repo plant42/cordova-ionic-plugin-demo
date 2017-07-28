@@ -1,0 +1,180 @@
+{
+  "voiceable" : {
+    "initial": {
+      "introduction" : {
+        "first" :   "Voiceable er en revolusjonerende app for å trene stemmen. Stemmen din blir målt for diverse vitenskapelige karakteristikker og så analyserert for å forutsi inntrykket du gjør på publikum!",
+        "second" :  "Bruk Voiceable for å identifisere dine styrker og svakheter, samt å forbedre deg selv hurtigt!"
+      }
+    },
+    "signup": {
+      "description" : "Velkommen til Voiceable! For å få mest ut av appen, anbefales det å lage en brukerprofil ved å logge inn med en av følgende tjenester:"
+    },
+    "tips" : {
+      "title" : "Tips og øvelser"
+    },
+    "record": {
+      "initial" : {
+        "title":    "Profftips",
+        "first":    "Velg et <b>stille sted</b>",
+        "second" :  "Snakk i minst <b>30 sekunder</b>",
+        "third" :   "Vær <b>lidenskapelig</b>",
+        "hint" :    "Trykk knappen for å starte innspilling"
+      },
+
+      "getReady" :  "Klar?...",
+      "recording":  "Fortsett å snakke...",
+      "submit":     "Send inn",
+      "retry" : {
+        "play":     "Spill opptak",
+        "stop":     "Stopp opptak",
+        "retry" :   "Prøv på nytt"
+      },
+      "survey": {
+        "gender":         "Hva er ditt kjønn?",
+        "description" :   "Publikum forventer forskjellig tonehøyde avhengig av kjønn. Vennligst oppgi kjønnet du ønsker at stemmen din skal vurderes som.",
+        "male" :          "MANN",
+        "female" :        "KVINNE",
+        "name" : {
+          "label":        "Navngi presentasjonen",
+          "placeholder":  "Navn"
+        },
+        "type" : {
+          "label":        "Type presentasjon",
+          "placeholder":  "Type",
+          "speech":       "Tale",
+          "presentation": "Presentasjon",
+          "pitch":        "Salgspitch",
+          "debate":       "Debatt",
+          "interview":    "Intervju",
+          "toast":        "Skål",
+          "pressRelease": "Pressemelding"
+        },
+        "rating": "Vurder deg selv",
+        "notice": "Stemmen din blir analysert. I mellomtiden kan du svare på disse spørsmålene:",
+        "please": "Vennligst",
+        "wait":   "Vent"
+      },
+      "prompts": {
+        "0": "Snakk tydelig...",
+        "1": "Bare fortsett...",
+        "2": "Dette går fint...",
+        "3": "Stå på...",
+        "4": "Bra jobba...",
+        "5": "Nesten ferdig..."
+      }
+    },
+    "results" : {
+      "title" :     "Resultater",
+      "score" :     "Din poengsum ",
+      "historic" :  "Tidligere resultater",
+      "numbers":    "Dine opptaksmålinger:",
+      "signup" : {
+        "title" :       "Registrer",
+        "description" : "Ønsker du å kunne lagre resultater for å følge fremdriften?"
+      },
+      "segment": {
+        "overall" :         "Generell poengsum",
+        "characteristics" : "Karakteristikk",
+        "impressions" :     "Inntrykk"
+      },
+      "overall": {
+        "title":            "Generell poengsum",
+        "ofTen":            "av 10",
+        "strength":         "Din styrke:",
+        "weakness":         "Din svakhet:",
+        "pitchAverage":     "Gjennomsnittlig tonehøyde:",
+        "pitchRange":       "Rekkevide til tonehøyde:",
+        "pitchModulation":  "Modulering av tonehøyde:",
+        "volumeRange":      "Rekkevidde til volum:",
+        "volumeModulation": "Modulering av volum:",
+        "pace":             "Tempo:"
+      },
+      "impressions": {
+        "title": "Hvordan vil publikum dømme personligheten din basert på stemmen?"
+      },
+      "characteristics": {
+        "title": "Vitenskapelig målinger av din stemmes karakteristikk"
+      }
+    },
+    "celebrity": {
+      "title" :         "Kjendis-match",
+      "you" :           "Du",
+      "share" :         "Del resultater",
+      "compare" :       "Sammenlign med innflytelsesrike personer",
+      "description":    "Din talemåte er {{score}}% lik som som <strong>{{name}}</strong>",
+      "segment" : {
+        "celebrity" : "Kjendiser",
+        "ceos" : "CEO'er",
+        "politicians" : "Politikere",
+        "influencers" : "Innflytelsesrike"
+      }
+    },
+    "buttons" : {
+      "learnMore" :   "Lær mer",
+      "signupWith" :  "Registrer med {{name}}",
+      "letsBegin" :   "Begynn",
+      "recordNew" :   "Nytt opptak",
+      "viewResults" : "Vis resultat",
+      "continue" :    "Fortsett",
+      "retry" :       "Prøv igjen",
+      "learnAbout":   "Lær om ",
+      "selectPeople": "Velg person",
+      "play" :        "Spill",
+      "pause" :       "Pause",
+      "noSignUp" :    "Prøv uten å logge inn",
+      "maybeLater":   "Kanskje Senere",
+      "back":         "Tilbake",
+
+      "characteristics": {
+        "pitch-average" :     "Tone",
+        "pitch-range" :       "Tone",
+        "pitch-moderation" :  "Tone",
+        "pace" :              "Hastighet",
+        "volume-range" :      "Volum",
+        "volume-average" :    "Volum",
+        "pleasantness" :      "Trivlighet",
+        "dynamism" :          "Dynamikk"
+      }
+    },
+    "errors" : {
+      "upload" :       "En feil oppsto. Vennligst prøv igjen",
+      "shareNotFound": "Mangler tjenesten! Prøv en annen.",
+      "shareUnable":   "Den tjenesten er ikka i stand til å dele dette."
+    },
+    "raw": {
+      "pace": {
+        "name": "Tempo",
+        "unit": "Stavelser/sek"
+      },
+
+      "pitch-average": {
+        "name": "Gjennomsnittlig Tonehøyde",
+        "unit": "Hz"
+      },
+      "pitch-range": {
+        "name": "Rekkevidde til Tonehøyde",
+        "unit": "Hz"
+      },
+      "pitch-modulation": {
+        "name": "Modulering av Tonehøyde",
+        "unit": ""
+      },
+      "volume-range": {
+        "name": "Rekkevidde til Volum",
+        "unit": "Db"
+      },
+      "volume-modulation": {
+        "name": "Modulering av Volum",
+        "unit": ""
+      },
+      "pleasantness": {
+        "name": "Trivlighet",
+        "unit": ""
+      },
+      "dynamism": {
+        "name": "Dynamikk",
+        "unit": ""
+      }
+    }
+  }
+}

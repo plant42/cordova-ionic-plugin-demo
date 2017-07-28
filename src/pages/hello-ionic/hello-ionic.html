@@ -9,24 +9,61 @@
 
 
 <ion-content padding>
-
-  <h3>Welcome to your first Ionic app!</h3>
-
   <p>
-    This starter project is our way of helping you get a functional app running in record time.
-  </p>
-  <p>
-    Follow along on the tutorial section of the Ionic docs!
-  </p>
-  <p>
-    <button ion-button color="primary" menuToggle>Toggle Menu</button>
-  </p>
- <p>
-    <button ion-button color="primary" (click)="buttonClick()">Click</button>
+    <button ion-button color="primary" menuToggle>Menu</button>
+    <button ion-button color="secondary" (click)="startRecording()">Start</button>
+    <button ion-button color="danger" (click)="stopRecording()">Stop</button>
+    <button ion-button color="dark" (click)="clearLog()">Clear</button>
   </p>
 
-<p><strong>Date Variable</strong></p>
-<p>
-{{dateVar}}
-</p>
+  <p><strong>Fake JSON data</strong></p>
+
+  <!-- This drawing makes no sense, it's just to illustrate changes happening -->
+  <div id="drawing" class="drawing" *ngIf="item != null && item.pace.now != null">
+    <svg xmlns="http://www.w3.org/2000/svg" version="1.1"
+         xmlns:xlink="http://www.w3.org/1999/xlink"  width="100%" height="200" viewBox="0 0 42 42">
+      <circle class="donut-hole" cx="21" cy="21" r="15.91549430918954" fill="#fff"></circle>
+      <circle class="donut-ring" cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#e4f3f2" stroke-width="3"></circle>
+      <circle class="donut-segment" cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#0ca5b4" stroke-width="3" [attr.stroke-dasharray]=item.pace.now stroke-dashoffset="25"></circle>
+      <text x="21" y="23" text-anchor="middle" font-family="Brix Sans Regular" font-size="1.0em" style="fill: #ff2e63">
+        {{item.pace.now}}
+      </text>
+      <text font-family="Brix Sans Regular" font-size="0.25em" style="fill: #939999" text-anchor="middle" x="21" y="28">
+        Dumb text
+      </text>
+    </svg>
+  </div>
+
+  <!-- List up all stats for pace -->
+  <p>
+    <br>
+    <span *ngIf="item != null && item.pace.now != null">    <b>Now: {{ item.pace.now }}</b> </span><br>
+    <span *ngIf="item != null && item.pace.min != null">    <b>Min: {{ item.pace.min }}</b> </span><br>
+    <span *ngIf="item != null && item.pace.max != null">    <b>Max: {{ item.pace.max }}</b> </span><br>
+    <span *ngIf="item != null && item.pace.range != null">  <b>Range: {{ item.pace.range }}</b> </span><br>
+    <span *ngIf="item != null && item.pace.mean != null">   <b>Mean: {{ item.pace.mean }}</b> </span><br>
+    <span *ngIf="item != null && item.pace.sd != null">     <b>StDev: {{ item.pace.sd }}</b> </span><br>
+    <span *ngIf="item != null && item.pace.median != null"> <b>Median: {{ item.pace.median }}</b> </span><br>
+    <span *ngIf="item != null && item.samples != null">     <b>Samples taken so far: {{ item.samples }}</b> </span><br>
+    <span *ngIf="item != null && item.finishTime != null">  <b>Time (ms) spent on last: {{ item.finishTime }}</b> </span><br>
+  </p>
+
+
+  <script src="https://code.highcharts.com/highcharts.js"></script>
+  <script src="https://code.highcharts.com/highcharts-more.js"></script>
+
+  <script src="https://code.highcharts.com/modules/solid-gauge.js"></script>
+
+  <div style="width: 600px; height: 400px; margin: 0 auto">
+    <div id="container-speed" style="width: 300px; height: 200px; float: left"></div>
+    <div id="container-rpm" style="width: 300px; height: 200px; float: left"></div>
+  </div>
+
+  <div id="gauge"></div>
+
+
+
+  <div id="chart_container"></div>
+  <div id="#chart_container"></div>
+
 </ion-content>

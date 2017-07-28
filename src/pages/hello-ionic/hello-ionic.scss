@@ -1,3 +1,6 @@
 page-hello-ionic {
-
+  .marker{
+    //For icons on result bar. Positioned with "middle as origin":
+    transform: translateX(-50%);
+  }
 }

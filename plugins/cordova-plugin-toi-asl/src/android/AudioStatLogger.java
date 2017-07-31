@@ -1,3 +1,7 @@
+import be.tarsos.dsp.io.android.AudioDispatcherFactory;
+import be.tarsos.dsp.pitch.PitchDetectionHandler;
+import be.tarsos.dsp.pitch.PitchDetectionResult;
+import be.tarsos.dsp.pitch.PitchProcessor;
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaInterface;
 import org.apache.cordova.CordovaPlugin;
@@ -9,19 +13,17 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import android.util.Log;
-import java.util.Date;
-import java.util.Timer;
-import java.util.Random;
-import java.util.TimerTask;
+import android.content.pm.PackageManager;
+import android.Manifest;
 
-import java.util.ArrayList;
-import java.util.Collections;
+
+import java.util.*;
 import java.lang.Math;
-
-
+import be.tarsos.dsp.*;
 
 
 public class AudioStatLogger extends CordovaPlugin {
+
   private static final String TAG = "AudioStatLogger";
   private Timer timer;
   JSONObject sample;
@@ -36,28 +38,48 @@ public class AudioStatLogger extends CordovaPlugin {
   public ArrayList<Float> volumeRange = new ArrayList<Float>();
   public ArrayList<Float> volumeModulation = new ArrayList<Float>();
 
+  public static final String RECORD = Manifest.permission.RECORD_AUDIO;
+  public static final int AUDIO_REQ_CODE = 0;
+
+  AudioDispatcher dispatcher;
+  Thread thread;
   long samples;
 
-  //Characteristics and their named stored as in JSON file.
-  //ArrayList<Float>[] charLists;
-  //charLists = new ArrayList<Float>[]{pace, pitchAverage, pitchModulation, pitchRange, volumeAverage, volumeRange, volumeModulation};
-  //charLists = {pace, pitchAverage, pitchModulation, pitchRange, volumeAverage, volumeRange, volumeModulation};
-  //String[] charNames = {"pace", "pitchAverage", "pitchModulation", "pitchRange", "volumeAverage", "volumeRange", "volumeModulation"};
+  String action;
+  JSONArray args;
+  CallbackContext callbackContext;
 
   public void initialize(CordovaInterface cordova, CordovaWebView webView) {
     super.initialize(cordova, webView);
+
     Log.d(TAG, "Initializing "+TAG);
     timer = null;
     samples = 0;
   }
 
-  public boolean execute(String action, final JSONArray args, final CallbackContext callbackContext) throws JSONException {
+  private boolean internal_execute(String action, final JSONArray args, final CallbackContext callbackContext) throws JSONException{
     if (action.equals("echo")) {
       String phrase = args.getString(0);
       Log.d(TAG, phrase);
     }
 
     else if (action.equals("startStream")) {
+
+      dispatcher = AudioDispatcherFactory.fromDefaultMicrophone(22050,1024,0);
+
+      PitchDetectionHandler pdh = new PitchDetectionHandler() {
+        @Override
+        public void handlePitch(PitchDetectionResult result, AudioEvent e) {
+          final float f = result.getPitch();
+          pitchAverage.add(f);
+        }
+      };
+      AudioProcessor p = new PitchProcessor(PitchProcessor.PitchEstimationAlgorithm.FFT_YIN, 22050, 1024, pdh);
+      dispatcher.addAudioProcessor(p);
+      thread = new Thread(dispatcher,"Audio Dispatcher");
+      thread.start();
+
+
       if (timer != null) return false; //Only want one timertask running.
       timer = new Timer();
       timer.scheduleAtFixedRate(new TimerTask() {
@@ -69,25 +91,71 @@ public class AudioStatLogger extends CordovaPlugin {
             exception.printStackTrace();
           }
         }
-      }, 0, 1000);
+      }, 0, 250);
     }
 
     else if (action.equals("stopStream")){
-      timer.cancel();
+      if (timer != null){
+        timer.cancel();
+      }
       timer = null;
+      if (dispatcher != null) {
+        dispatcher.stop();
+      }
+      dispatcher = null;
+      try{
+        thread.join();
+      } catch (Exception e){
+        e.printStackTrace();
+      }
     }
 
     //Fix clear: Currently seems to do nothing.
     else if (action.equals("clearLog")){
-      Log.d(TAG, "clearLog action triggered in AudioStatLogger.java");
+      Log.d(TAG, "Clearing AudioStatLogger arraylists");
       pace.clear();
       pitchAverage.clear(); pitchModulation.clear(); pitchRange.clear();
       volumeAverage.clear(); volumeRange.clear(); volumeModulation.clear();
+      samples=0;
 
     }
-
     return true;
   }
+
+  public boolean execute(String action, final JSONArray args, final CallbackContext callbackContext) throws JSONException {
+    if(!cordova.hasPermission(RECORD))
+    {
+      this.action = action;
+      this.args = args;
+      this.callbackContext = callbackContext;
+      getReadPermission(AUDIO_REQ_CODE);
+      return false;
+    }
+    else {
+      return internal_execute(action, args, callbackContext);
+    }
+  }
+
+  protected void getReadPermission(int requestCode)
+  {
+    cordova.requestPermission(this, requestCode, RECORD);
+  }
+
+  @Override
+  public void onRequestPermissionResult(int requestCode, String[] permissions, int[] grantResults) throws JSONException
+  {
+    for(int r:grantResults)
+    {
+      if(r == PackageManager.PERMISSION_DENIED)
+      {
+        this.callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.ERROR, "PERMISSION_DENIED_ERROR"));
+        return;
+      }
+    }
+
+    internal_execute(this.action, this.args, this.callbackContext);
+  }
+
 
 
   public void logStats(JSONArray args, final CallbackContext callbackContext) throws JSONException{
@@ -95,13 +163,15 @@ public class AudioStatLogger extends CordovaPlugin {
     Random rand = new Random();
     pace.add((float)rand.nextInt(101));
 
-    pitchAverage.add((float)rand.nextInt(101));
+    //pitchAverage.add((float)rand.nextInt(101));
+    /*
     pitchModulation.add((float)rand.nextInt(101));
     pitchRange.add((float)rand.nextInt(101));
 
     volumeAverage.add((float)rand.nextInt(101));
     volumeRange.add((float)rand.nextInt(101));
     volumeModulation.add((float)rand.nextInt(101));
+    */
   }
 
 
@@ -111,13 +181,13 @@ public class AudioStatLogger extends CordovaPlugin {
     JSONObject statSheet = new JSONObject();
     statSheet.put("pace", getStats(pace, 5));
 
-    statSheet.put("pitchAverage", getStats(pitchAverage));
-    statSheet.put("pitchRange", getStats(pitchRange));
+    statSheet.put("pitchAverage", getStats(pitchAverage, 20));
+    /*statSheet.put("pitchRange", getStats(pitchRange));
     statSheet.put("pitchModulation", getStats(pitchModulation));
 
     statSheet.put("volumeAverage", getStats(volumeAverage));
     statSheet.put("volumeRange", getStats(volumeRange));
-    statSheet.put("volumeModulation", getStats(volumeModulation));
+    statSheet.put("volumeModulation", getStats(volumeModulation));*/
 
     statSheet.put("samples", samples++);
     statSheet.put("finishTime", (System.nanoTime() - startTime) / 1000000.0);
@@ -134,66 +204,76 @@ public class AudioStatLogger extends CordovaPlugin {
    * getStats(values, from, to) is computed using the stats between index #<from> and <to>
    */
 
-  private JSONObject getStats(ArrayList<Float> values) throws JSONException{
-    return getStats(values, 0, values.size()-1); //If no more args, do entire thing.
+  private JSONObject getStats(List<Float> statLog, int from, int to) throws JSONException{
+    Log.d(TAG, "getStats called with from "+from+" to "+to);
+    return getStats(statLog.subList(from, to));
   }
-  private JSONObject getStats(ArrayList<Float> values, int nLast) throws JSONException{
-    Log.d(TAG, "Trying to get stats between index "+(values.size()-nLast)+" and "+(values.size()-1));
-    return getStats(values, values.size()-nLast, values.size()-1);
+  private JSONObject getStats(List<Float> statLog, int nLast) throws JSONException{
+    Log.d(TAG, "getStats called with nLast "+nLast);
+    Log.d(TAG, "Making nList sublist from "+(statLog.size()-nLast)+" to "+statLog.size());
+    return getStats(statLog.subList(statLog.size()-nLast, statLog.size()));
   }
-  private JSONObject getStats(ArrayList<Float> values, int from, int to) throws JSONException{
+
+  private JSONObject getStats(List<Float> values) throws JSONException{
     if (values == null || values.size() == 0) return null;
-    int size = values.size();
-    if (from < 0) from = 0;
-    if (to >= size) to = size-1;
-    Log.d(TAG, "Will now access arraylist indexes between "+to+" and "+from);
+    int N = values.size();
+
+    Log.d(TAG, "Fetching stats on list with size "+values.size());
 
     float min=Float.MAX_VALUE;
     float max=Float.MIN_VALUE;
     float sum = 0, current = 0;
 
     // TODO: Check whether this loop requires i<=to
-    for (int i=from; i < to; i++){
-      current = values.get(i);
-      sum += current;
-      if (current < min) min = current; //New min
-      if (current > max) max = current; //New max
+    for (float f: values){
+      if (f == -1) continue;// Skip if no audio data
+      sum += f;
+      if (f < min) min = f; // New min found
+      if (f > max) max = f; // New max found
     }
-    float mean = sum/(1+to-from);
+    float mean = sum/N;
+
+    float diffSquareSum = 0;
+    for (float f: values){
+      if (f == -1) continue;// Skip if no audio data
+      diffSquareSum += (f-mean)*(f-mean);
+    }
+    float standardDeviation = (float) Math.sqrt(diffSquareSum / N);
 
     JSONObject stats = new JSONObject();
-    stats.put("now", values.get(to)); //Default <to> is values.size()-1, being last result recorded.
+    stats.put("now", values.get(N-1)); //Default <to> is values.size()-1, being last result recorded.
     stats.put("min", min);
     stats.put("max", max);
     stats.put("range", max-min);
     stats.put("mean", mean);
-    //stats.put("sd", standardDeviation(values, from, to, mean));
-    //stats.put("median", median(values, from, to));
+    stats.put("sd", standardDeviation);
+    stats.put("median", median(values));
     return stats;
   }
 
-  private float standardDeviation(ArrayList<Float> values, int from, int to, float mean){
-    float[] buffer = new float[1+to-from];
-    float sum = 0;
-    // TODO: Check whether this loop requires i<=to
-    for (int i=from; i<to; i++){
-      sum += (buffer[i] = (values.get(i) - mean)*(values.get(i) - mean)); //(val - mean)^2
-    }
-    return (float)Math.sqrt(sum/(1+to-from));
-  }
-
   //TODO: Fix median. Currently doesn't return correct number.
-  private float median(ArrayList<Float> values, int from, int to){
-    ArrayList<Float> buffer = (ArrayList<Float>)values.clone();
+  private float median(List<Float> values){
+    List<Float> buffer = new ArrayList<Float>(values); //clone
     Collections.sort(buffer);
-    int size = buffer.size();
+    int N = buffer.size();
 
-    if (size % 2 == 0){ //[0][1][2][3] Two middle values, so average [1] and [2]
-      float middleLeft = buffer.get((size/2)-1);
-      float middleRight = buffer.get(size/2);
+    if (N % 2 == 0){ //[0][1][2][3] Two middle values, so average [1] and [2]
+      float middleLeft = buffer.get((N/2)-1);
+      float middleRight = buffer.get(N/2);
       return middleLeft+middleRight/2;
     } else { //[0][1][2]. Select middle [1].
-      return buffer.get(size/2);
+      return buffer.get(N/2);
     }
+  }
+
+  private String freqToNote(float f){
+    if(f >= 110 && f < 123.47) return "A";
+    else if(f >= 123.47 && f < 130.81) return "B";
+    else if(f >= 130.81 && f < 146.83) return "C";
+    else if(f >= 146.83 && f < 164.81) return "D";
+    else if(f >= 164.81 && f < 174.60) return "E";
+    else if(f >= 174.61 && f < 185) return "F";
+    else if(f >= 185.00 && f < 196) return "G";
+    return "#";
   }
 }

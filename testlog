@@ -1,0 +1,14 @@
+Trying to get stats between index -4 and 0
+Will now access arraylist indexes between 0 and 0
+Trying to get stats between index -3 and 1
+Will now access arraylist indexes between 1 and 0
+Trying to get stats between index -2 and 2
+Will now access arraylist indexes between 2 and 0
+Trying to get stats between index -1 and 3
+Will now access arraylist indexes between 3 and 0
+Trying to get stats between index 0 and 4
+Will now access arraylist indexes between 4 and 0
+Trying to get stats between index 1 and 5
+Will now access arraylist indexes between 5 and 1
+Trying to get stats between index 2 and 6
+Will now access arraylist indexes between 6 and 2

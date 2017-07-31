@@ -13,6 +13,9 @@ var AudioStatLogger = {
   },
   stopStream: function(cb) {
     exec(cb, null, PLUGIN_NAME, 'stopStream', []);
+  },
+  clearLog: function(cb) {
+    exec(sb, null, PLUGIN_NAME, 'clearLog', []);
   }
 };
 

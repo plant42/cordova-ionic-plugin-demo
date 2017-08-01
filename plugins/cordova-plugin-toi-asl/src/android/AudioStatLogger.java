@@ -71,7 +71,9 @@ public class AudioStatLogger extends CordovaPlugin {
         @Override
         public void handlePitch(PitchDetectionResult result, AudioEvent e) {
           final float f = result.getPitch();
-          pitchAverage.add(f);
+          synchronized (this){
+            pitchAverage.add(f);
+          }
         }
       };
       AudioProcessor p = new PitchProcessor(PitchProcessor.PitchEstimationAlgorithm.FFT_YIN, 22050, 1024, pdh);
@@ -95,18 +97,20 @@ public class AudioStatLogger extends CordovaPlugin {
     }
 
     else if (action.equals("stopStream")){
-      if (timer != null){
-        timer.cancel();
-      }
-      timer = null;
-      if (dispatcher != null) {
-        dispatcher.stop();
-      }
-      dispatcher = null;
-      try{
-        thread.join();
-      } catch (Exception e){
-        e.printStackTrace();
+      synchronized(this){
+        if (timer != null){
+          timer.cancel();
+        }
+        timer = null;
+        if (dispatcher != null) {
+          dispatcher.stop();
+        }
+        dispatcher = null;
+        try{
+          thread.join();
+        } catch (Exception e){
+          e.printStackTrace();
+        }
       }
     }
 
@@ -210,6 +214,7 @@ public class AudioStatLogger extends CordovaPlugin {
   }
   private JSONObject getStats(List<Float> statLog, int nLast) throws JSONException{
     Log.d(TAG, "getStats called with nLast "+nLast);
+    if (nLast > statLog.size()) nLast = statLog.size();
     Log.d(TAG, "Making nList sublist from "+(statLog.size()-nLast)+" to "+statLog.size());
     return getStats(statLog.subList(statLog.size()-nLast, statLog.size()));
   }
@@ -224,7 +229,6 @@ public class AudioStatLogger extends CordovaPlugin {
     float max=Float.MIN_VALUE;
     float sum = 0, current = 0;
 
-    // TODO: Check whether this loop requires i<=to
     for (float f: values){
       if (f == -1) continue;// Skip if no audio data
       sum += f;

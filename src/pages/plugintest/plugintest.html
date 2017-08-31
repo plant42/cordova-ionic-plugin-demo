@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Record Audio</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+  <p>
+    <button ion-button color="secondary" (click)="startLog()">Start</button>
+    <button ion-button color="danger" (click)="stopLog()">Stop</button>
+    <button ion-button color="dark" (click)="clearLog()">Clear</button>
+  </p>
+
+  <ion-card>
+    <ion-card-header>
+      Homemade Gauge
+    </ion-card-header>
+    <ion-card-content>
+      <canvas #gaugeCanvas></canvas>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- List up all stats for pitchAverage -->
+  <p>
+    <br>
+    <span *ngIf="item != null && item.pitchAverage.mean != null">   <b>Mean: {{ item.pitchAverage.mean.toFixed(1) }}</b> </span><br>
+    <span *ngIf="item != null && item.pitchAverage.last != null">    <b>Now: {{ item.pitchAverage.last.toFixed(1) }}</b> </span><br>
+    <span *ngIf="item != null && item.pitchAverage.min != null">    <b>Min: {{ item.pitchAverage.min.toFixed(1) }}</b> </span><br>
+    <span *ngIf="item != null && item.pitchAverage.max != null">    <b>Max: {{ item.pitchAverage.max.toFixed(1) }}</b> </span><br>
+    <span *ngIf="item != null && item.pitchAverage.range != null">  <b>Range: {{ item.pitchAverage.range.toFixed(1) }}</b> </span><br>
+    <span *ngIf="item != null && item.pitchAverage.sd != null">     <b>StDev: {{ item.pitchAverage.sd.toFixed(1) }}</b> </span><br>
+    <span *ngIf="item != null && item.pitchAverage.median != null"> <b>Median: {{ item.pitchAverage.median.toFixed(1) }}</b> </span><br>
+    <span *ngIf="item != null && item.samples != null">     <b>Samples taken so far: {{ item.samples }}</b> </span><br>
+    <span *ngIf="item != null && item.finishTime != null">  <b>Time (ms) spent on last: {{ item.finishTime }}</b> </span><br>
+  </p>
+
+</ion-content>
